@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BlogContoller extends Controller
@@ -14,27 +15,10 @@ class BlogContoller extends Controller
      */
     public function index()
     {
-        // Menggunakan Storage untuk membaca file posts.txt
-        $postsContent = Storage::get('posts.txt');
-
-        // Memisahkan setiap baris dalam file
-        $posts = explode("\n", $postsContent);
-
-        $postsArray = array();
-
-        // Iterasi melalui setiap baris dan memecahnya berdasarkan koma
-        foreach ($posts as $post) {
-            $postArray = explode(',', $post);
-
-            // Memasukkan array hasil pecahan ke dalam array $postsArray
-            $postsArray[] = $postArray;
-        }
-
-        // Menyusun data model untuk dikirimkan ke view
+        $datas = DB::table('feb_blog')->get();
         $model_data = [
-            'posts' => $postsArray,
+            'posts' => $datas,
         ];
-
         // Mengirimkan data model ke view 'blog.index'
         return view('blog.index', $model_data);
     }
@@ -64,25 +48,15 @@ class BlogContoller extends Controller
         $imgUrl = $request->input('imgUrl');
 
 
-        $posts = Storage::get('posts.txt');
-        $posts = explode("\n", $posts);
+        DB::table('feb_blog')->insert([
+            'title' => $title,
+            'kategori' => $kategori,
+            'deskripsi' => $deskripsi,
+            'imgUrl' => $imgUrl,
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("y-m-d H:i:s")
+        ]);
 
-        $newPost = [
-            // gunakan cara yang kebih baik dari ini
-            count($posts) + 1,
-            $title,
-            $kategori,
-            $deskripsi,
-            $imgUrl,
-            date('Y-m-d H:i:s')
-        ];
-
-        $new_post = implode(',', $newPost);
-
-        array_push($posts, $new_post);
-        $posts = implode("\n", $posts);
-
-        Storage::write('posts.txt', $posts);
 
         return redirect('blogs');
     }
@@ -95,18 +69,10 @@ class BlogContoller extends Controller
      */
     public function show($id)
     {
-        $posts = Storage::get('posts.txt');
-        $posts = explode("\n", $posts);
-        $selected_post = array();
-        foreach ($posts as $post) {
-            $post = explode(",", $post);
+        $datas = DB::table('feb_blog')->where('id', '=', $id)->first();
 
-            if ($post[0] == $id) {
-                $selected_post = $post;
-            }
-        }
         $view_data = [
-            'post' => $selected_post
+            'post' => $datas,
         ];
         return view('blog.detail', $view_data);
     }

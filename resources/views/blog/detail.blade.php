@@ -4,7 +4,7 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Detail Page</title>
+   <title>Detail || {{$post->title}}</title>
    <!-- Link to Bootstrap CSS -->
    <link rel="stylesheet" href="{{ asset('bootstrap-5/css/bootstrap.min.css') }}">
    <style>
@@ -55,15 +55,14 @@
 
    <main class="container mt-4">
       <article class="blog-post">
-         <h2 class="mb-4 text-center">Category: {{$post[2]}}</h2>
+         <h2 class="mb-4 text-center">Category: {{$post->kategori}}</h2>
          <a href="{{ url('/blogs')}}" class="btn btn-secondary mb-3">Back to Posts</a>
-         @php(dd($post[4]))
          <div class="card mb-3">
-            <img src="{{ $post[4] }}" class="card-img-top img-fluid" alt="Image">
+            <img src="{{ $post->imgUrl }}" class="card-img-top img-fluid" alt="Image">
             <div class="card-body">
-               <h5 class="card-title font-weight-bold">{{$post[1]}}</h5>
-               <p class="card-text">{{$post[3]}}</p>
-               <small class="text-muted">Last updated: {{ date('d M Y', strtotime($post[5])) }}</small>
+               <h1 class="card-title font-weight-bold">{{$post->title}}</h1>
+               <p class="card-text" style="line-height: 1.9; margin-bottom: 10px;">{{$post->deskripsi}}</p>
+               <small class="text-muted">Last updated: {{ date('d M Y', strtotime($post->created_at)) }}</small>
             </div>
          </div>
       </article>

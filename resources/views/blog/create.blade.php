@@ -66,8 +66,14 @@
          </div>
          <div class="form-group">
             <label for="kategori">Kategori:</label>
-            <input type="text" class="form-control" id="kategori" name="kategori">
+            <select class="form-control" id="kategori" name="kategori">
+               <option value="education">Education</option>
+               <option value="lifestyle">Lifestyle</option>
+               <option value="programming">Programming</option>
+               <option value="fashion">Fashion</option>
+            </select>
          </div>
+
          <div class="form-group">
             <label for="deskripsi">Deskripsi:</label>
             <input type="text" class="form-control" id="deskripsi" name="deskripsi">
