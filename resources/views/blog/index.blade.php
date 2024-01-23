@@ -97,8 +97,9 @@
             <div class="col-4 text-center">
                <a class="blog-header-logo text-body-emphasis text-decoration-none" href="#">Feb Blog</a>
             </div>
-            <div class="col-4 d-flex justify-content-end align-items-center">
+            <div class="col-4 d-flex justify-content-end align-items-center gap-2">
                <a href="{{ url('create') }}" class="btn btn-primary">Buat Post</a>
+               <a href="{{url('edit')}}" class="btn btn-success">Edit Post</a>
             </div>
          </div>
       </header>

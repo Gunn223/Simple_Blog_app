@@ -19,6 +19,10 @@ Route::get('/', function () {
 });
 
 Route::get('blogs', [BlogContoller::class, 'index']);
+Route::get('edit', [BlogContoller::class, 'editPages']);
 Route::get('detail/{id}', [BlogContoller::class, 'show']);
 Route::get('create', [BlogContoller::class, 'create']);
 Route::post('blogs', [BlogContoller::class, 'store']);
+Route::delete('edit/{id}', [BlogContoller::class, 'destroy']);
+Route::post('edit/{id}/update', [BlogContoller::class, 'edit']);
+Route::patch('edit/{id}', [BlogContoller::class, 'update']);

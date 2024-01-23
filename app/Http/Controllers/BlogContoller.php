@@ -85,7 +85,14 @@ class BlogContoller extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = DB::table('feb_blog')->select('id', 'title', 'kategori', 'deskripsi', 'imgUrl', 'updated_at')->where('id', '=', $id)->first();
+
+
+
+        $model = [
+            'post' => $data
+        ];
+        return view('blog.update', $model);
     }
 
     /**
@@ -97,7 +104,23 @@ class BlogContoller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $title = $request->input('judul');
+        $deskripsi = $request->input('deskripsi');
+        $kategori = $request->input('kategori');
+        $imgUrl = $request->input('imgUrl');
+
+
+
+        DB::table('feb_blog')->where('id', '=', $id)->update([
+            'title' => $title,
+            'deskripsi' => $deskripsi,
+            'kategori' => $kategori,
+            'imgUrl' => $imgUrl,
+            'updated_at' => date("y-m-d H:i:s")
+        ]);
+
+
+        return redirect('edit');
     }
 
     /**
@@ -108,6 +131,17 @@ class BlogContoller extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('feb_blog')->where('id', '=', $id)->delete();
+
+        return redirect('blogs');
+    }
+
+    public function editPages()
+    {
+        $posts = DB::table('feb_blog')->get();
+        $model = [
+            'posts' => $posts
+        ];
+        return view('blog.edit', $model);
     }
 }
