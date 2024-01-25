@@ -10,25 +10,19 @@
    <style>
       body {
          background-color: #f8f9fa;
-         /* Set a light background color */
       }
 
       header {
          background-color: #343a40;
-         /* Dark background color for the header */
          color: #fff;
-         /* Light text color for the header */
          padding: 15px;
          text-align: center;
       }
 
       .blog-post {
          background-color: #fff;
-         /* White background for the blog post */
          border-radius: 10px;
-         /* Add some border radius for a softer look */
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-         /* Add a subtle box shadow */
          padding: 20px;
          margin-bottom: 20px;
       }
@@ -36,22 +30,30 @@
       .blog-post img {
          width: 100%;
          border-radius: 8px;
-         /* Rounded corners for the image */
       }
 
       footer {
          background-color: #343a40;
-         /* Dark background color for the footer */
          color: #fff;
-         /* Light text color for the footer */
          padding: 15px;
          text-align: center;
+      }
+
+      /* Style for comments */
+      .comments-section {
+         margin-top: 30px;
+      }
+
+      .comment {
+         margin-bottom: 20px;
       }
    </style>
 </head>
 
 <body>
-
+   <header>
+      <h1>Blog Title</h1>
+   </header>
 
    <main class="container mt-4">
       <article class="blog-post">
@@ -64,6 +66,30 @@
                <p class="card-text" style="line-height: 1.9; margin-bottom: 10px;">{{$post->deskripsi}}</p>
                <small class="text-muted">Last updated: {{ date('d M Y', strtotime($post->created_at)) }}</small>
             </div>
+         </div>
+
+         <!-- Comments Section -->
+         <div class="comments-section">
+            <h3 class="mb-3">Comments</h3>
+
+            <!-- Display Comments -->
+            <p>All Comments</p>
+            @foreach($comments as $comment)
+            <div class="comment">
+               <p><strong>{{$comment->comment}}</strong></p>
+            </div>
+            @endforeach
+
+            <!-- Comment Form -->
+            <form action="{{url('comment/'.$post->id)}}" method="POST">
+
+               @csrf
+               <div class="mb-3">
+                  <label for="comment_text" class="form-label">Your Comment</label>
+                  <textarea class="form-control" id="comment_text" name="comment_text" rows="3" required></textarea>
+               </div>
+               <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
          </div>
       </article>
    </main>

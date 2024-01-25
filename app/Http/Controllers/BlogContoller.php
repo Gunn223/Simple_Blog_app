@@ -4,18 +4,42 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Blog;
+use App\Models\Comment;
 
 class BlogContoller extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function createComent($id, Request $req)
+    {
+
+        $comment = $req->input('comment_text');
+
+        Comment::insert([
+            'comment' => $comment,
+            'blog_id' => $id
+        ]);
+
+        $datas = Blog::where('id', '=', $id)->first();
+        $comennts = $datas->comments;
+
+
+        $view_data = [
+            'post' => $datas,
+            'comments' => $comennts
+        ];
+
+
+        return view('blog.detail', $view_data);
+    }
     public function index()
     {
-        $datas = DB::table('feb_blog')->get();
+        $datas = Blog::get();
         $model_data = [
             'posts' => $datas,
         ];
@@ -48,7 +72,7 @@ class BlogContoller extends Controller
         $imgUrl = $request->input('imgUrl');
 
 
-        DB::table('feb_blog')->insert([
+        Blog::insert([
             'title' => $title,
             'kategori' => $kategori,
             'deskripsi' => $deskripsi,
@@ -69,10 +93,13 @@ class BlogContoller extends Controller
      */
     public function show($id)
     {
-        $datas = DB::table('feb_blog')->where('id', '=', $id)->first();
+        $datas = Blog::where('id', '=', $id)->first();
+        $comennts = $datas->comments;
+
 
         $view_data = [
             'post' => $datas,
+            'comments' => $comennts
         ];
         return view('blog.detail', $view_data);
     }
@@ -85,7 +112,7 @@ class BlogContoller extends Controller
      */
     public function edit($id)
     {
-        $data = DB::table('feb_blog')->select('id', 'title', 'kategori', 'deskripsi', 'imgUrl', 'updated_at')->where('id', '=', $id)->first();
+        $data = Blog::select('id', 'title', 'kategori', 'deskripsi', 'imgUrl', 'updated_at')->where('id', '=', $id)->first();
 
 
 
@@ -111,7 +138,7 @@ class BlogContoller extends Controller
 
 
 
-        DB::table('feb_blog')->where('id', '=', $id)->update([
+        Blog::where('id', '=', $id)->update([
             'title' => $title,
             'deskripsi' => $deskripsi,
             'kategori' => $kategori,
@@ -131,14 +158,14 @@ class BlogContoller extends Controller
      */
     public function destroy($id)
     {
-        DB::table('feb_blog')->where('id', '=', $id)->delete();
+        Blog::where('id', '=', $id)->delete();
 
         return redirect('blogs');
     }
 
     public function editPages()
     {
-        $posts = DB::table('feb_blog')->get();
+        $posts = Blog::get();
         $model = [
             'posts' => $posts
         ];

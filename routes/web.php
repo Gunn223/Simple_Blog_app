@@ -26,3 +26,4 @@ Route::post('blogs', [BlogContoller::class, 'store']);
 Route::delete('edit/{id}', [BlogContoller::class, 'destroy']);
 Route::post('edit/{id}/update', [BlogContoller::class, 'edit']);
 Route::patch('edit/{id}', [BlogContoller::class, 'update']);
+Route::post('comment/{id}', [BlogContoller::class, 'createComent']);
